@@ -1,66 +1,50 @@
+import axios from "axios";
 import AddNote from "../components/AddNote";
 import Navbar from "../components/Navbar";
 import Note from "../components/Note";
+import { UserContext } from "../context/context";
+import { useContext, useEffect, useState } from "react";
+
+interface Label {
+  name: string;
+}
+interface Note {
+  title: string;
+  content: string;
+  labels: Label[];
+  pinned: boolean;
+}
 
 function Home() {
-  const notes = [
-    {
-      title: "Heading 1",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, repellat id! Suscipit, qui. Commodi beatae minima exercitationem maiores vero, sapiente soluta ipsa debitis, dicta vel pariatur officia saepe, culpa iusto adipisci fugiat. Adipisci cum obcaecati odio nostrum explicabo ab minima, maxime maiores in illum nulla pariatur quia temporibus dolor corporis",
-    },
-    {
-      title: "Heading 2",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint, doloremque vero! Quae error odit, impedit consequuntur reprehenderit labore, eius itaque molestias harum suscipit, rerum voluptatem ullam. Enim culpa neque eaque.",
-    },
-    {
-      title: "Heading 1",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, repellat id! Suscipit, qui. Commodi beatae minima exercitationem maiores vero, sapiente soluta ipsa debitis, dicta vel pariatur officia saepe, culpa iusto adipisci fugiat. Adipisci cum obcaecati odio nostrum explicabo ab minima, maxime maiores in illum nulla pariatur quia temporibus dolor corporis",
-    },
-    {
-      title: "Heading 2",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint, doloremque vero! Quae error odit, impedit consequuntur reprehenderit labore, eius itaque molestias harum suscipit, rerum voluptatem ullam. Enim culpa neque eaque.",
-    },
-    {
-      title: "Heading 1",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, repellat id! Suscipit, qui. Commodi beatae minima exercitationem maiores vero, sapiente soluta ipsa debitis, dicta vel pariatur officia saepe, culpa iusto adipisci fugiat. Adipisci cum obcaecati odio nostrum explicabo ab minima, maxime maiores in illum nulla pariatur quia temporibus dolor corporis",
-    },
-    {
-      title: "Heading 2",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint, doloremque vero! Quae error odit, impedit consequuntur reprehenderit labore, eius itaque molestias harum suscipit, rerum voluptatem ullam. Enim culpa neque eaque.",
-    },
-    {
-      title: "Heading 1",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, repellat id! Suscipit, qui. Commodi beatae minima exercitationem maiores vero, sapiente soluta ipsa debitis, dicta vel pariatur officia saepe, culpa iusto adipisci fugiat. Adipisci cum obcaecati odio nostrum explicabo ab minima, maxime maiores in illum nulla pariatur quia temporibus dolor corporis",
-    },
-    {
-      title: "Heading 2",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint, doloremque vero! Quae error odit, impedit consequuntur reprehenderit labore, eius itaque molestias harum suscipit, rerum voluptatem ullam. Enim culpa neque eaque.",
-    },
-    {
-      title: "Heading 1",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, repellat id! Suscipit, qui. Commodi beatae minima exercitationem maiores vero, sapiente soluta ipsa debitis, dicta vel pariatur officia saepe, culpa iusto adipisci fugiat. Adipisci cum obcaecati odio nostrum explicabo ab minima, maxime maiores in illum nulla pariatur quia temporibus dolor corporis",
-    },
-    {
-      title: "Heading 2",
-      content:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint, doloremque vero! Quae error odit, impedit consequuntur reprehenderit labore, eius itaque molestias harum suscipit, rerum voluptatem ullam. Enim culpa neque eaque.",
-    },
-  ];
-  
+  const [notes, setNotes] = useState<Note[]>([]);
+  const context = useContext(UserContext);
+
+  const handleAddNote = (status: boolean) => {
+    if (status) getNotes();
+  };
+
+  const getNotes = async () => {
+    axios
+      .get("http://localhost:8080/api/user", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => setNotes(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    if (context.isLoggedIn) {
+      getNotes();
+    }
+  }, []);
+
   return (
     <section className='min-h-screen'>
       <Navbar />
       <div className='p-4 space-y-10'>
-        <AddNote />
+        <AddNote status={handleAddNote} />
         <div className='flex flex-wrap justify-center'>
           {notes.map((note, index) => (
             <Note key={index} title={note.title} content={note.content} />

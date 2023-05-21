@@ -1,12 +1,16 @@
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { Alert, AlertColor, Snackbar } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/context";
 
 function GoogleOauthLogin() {
   const [message, setMessage] = useState<string>();
   const [severity, setSeverity] = useState<AlertColor>();
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const context = useContext(UserContext);
 
   const handleClose = () => {
     setOpen(false);
@@ -18,7 +22,11 @@ function GoogleOauthLogin() {
     });
     axios
       .post("http://localhost:8080/api/auth/authenticate/google?" + params)
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        context.setLoggedIn(true);
+        localStorage.setItem("token", res.data.token);
+        navigate("/home");
+      })
       .catch(() => {
         setOpen(true);
         setMessage("Error has occured");
