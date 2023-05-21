@@ -27,7 +27,7 @@ function UserLogin() {
       return;
     }
     axios
-      .post("http://localhost:8080/api/auth/authenticate", {
+      .post("https://spring-notes-app.onrender.com/api/auth/authenticate", {
         email: email,
         password: password,
       })

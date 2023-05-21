@@ -32,17 +32,17 @@ export default function Navbar() {
         to='/home'
         className='flex text-xl text-white space-x-2 items-center'>
         <TextSnippet />
-        <h1>Notes Tracker</h1>
+        <h1 className='text-xs md:text-base'>Notes Tracker</h1>
       </Link>
       <div className='flex items-center space-x-6 text-white'>
-        <div className='w-10 h-10 rounded-full overflow-hidden'>
+        <div className='w-8 md:w-10 h-8 md:h-10 rounded-full overflow-hidden'>
           <img
             src={picture || newUser}
             alt='profile'
             className='object-cover object-center w-fit'
           />
         </div>
-        <h1>{subject}</h1>
+        <h1 className='text-xs md:text-base'>{subject}</h1>
         <Logout onClick={logOut} className='text-white cursor-pointer' />
       </div>
     </div>

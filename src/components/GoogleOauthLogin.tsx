@@ -22,13 +22,17 @@ function GoogleOauthLogin() {
       token: auth.credential as string,
     });
     axios
-      .post("http://localhost:8080/api/auth/authenticate/google?" + params)
+      .post(
+        "https://spring-notes-app.onrender.com/api/auth/authenticate/google?" +
+          params
+      )
       .then((res) => {
         context.setLoggedIn(true);
         localStorage.setItem("token", res.data.token);
         navigate("/home");
       })
       .catch(() => {
+        localStorage.removeItem("googleOauthToken");
         setOpen(true);
         setMessage("Error has occured");
         setSeverity("error");

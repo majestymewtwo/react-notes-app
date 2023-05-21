@@ -17,7 +17,7 @@ function AddNote({ status }: AddNoteProps) {
     if (textareaRef.current && textareaRef.current?.value.length !== 0) {
       axios
         .post(
-          "http://localhost:8080/api/user/new",
+          "https://spring-notes-app.onrender.com/api/user/new",
           {
             title: title,
             content: content,

@@ -28,11 +28,13 @@ function UserSignup() {
       email.length === 0 ||
       password.length === 0
     ) {
-      alert("Please fill the details");
+      setOpen(true);
+      setSeverity("warning");
+      setMessage("Please fill the details");
       return;
     }
     axios
-      .post("http://localhost:8080/api/auth/register", {
+      .post("https://spring-notes-app.onrender.com/api/auth/register", {
         firstName: firstName,
         lastName: lastName,
         email: email,

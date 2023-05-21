@@ -34,7 +34,7 @@ function NoteView() {
 
   const getNoteDetails = async () => {
     axios
-      .get("http://localhost:8080/api/user/" + noteId, {
+      .get("https://spring-notes-app.onrender.com/api/user/" + noteId, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -50,7 +50,7 @@ function NoteView() {
   const updateNote = async () => {
     axios
       .put(
-        "http://localhost:8080/api/user/edit",
+        "https://spring-notes-app.onrender.com/api/user/edit",
         {
           id: note?.id,
           content: content,

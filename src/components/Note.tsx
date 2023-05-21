@@ -31,7 +31,7 @@ function Note({ id, title, content, labels, pinned, status }: NoteProps) {
   const addNewLabel = async () => {
     axios
       .put(
-        "http://localhost:8080/api/user/addLabel/" + id,
+        "https://spring-notes-app.onrender.com/api/user/addLabel/" + id,
         {
           name: newLabel,
         },
@@ -51,7 +51,7 @@ function Note({ id, title, content, labels, pinned, status }: NoteProps) {
 
   const deleteNote = async () => {
     axios
-      .delete("http://localhost:8080/api/user/delete/" + id, {
+      .delete("https://spring-notes-app.onrender.com/api/user/delete/" + id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -64,7 +64,7 @@ function Note({ id, title, content, labels, pinned, status }: NoteProps) {
 
   const togglePin = async () => {
     axios
-      .put("http://localhost:8080/api/user/togglePin/" + id, {
+      .put("https://spring-notes-app.onrender.com/api/user/togglePin/" + id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

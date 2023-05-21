@@ -11,11 +11,14 @@ interface LabelProps {
 function NoteViewLabel({ id, name, status }: LabelProps) {
   const deleteLabel = async () => {
     axios
-      .delete("http://localhost:8080/api/user/deleteLabel/" + id, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
+      .delete(
+        "https://spring-notes-app.onrender.com/api/user/deleteLabel/" + id,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      )
       .then(() => status(true))
       .catch((er) => {
         console.log(er);

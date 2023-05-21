@@ -27,7 +27,7 @@ function Home() {
 
   const getNotes = async () => {
     axios
-      .get("http://localhost:8080/api/user", {
+      .get("https://spring-notes-app.onrender.com/api/user", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
