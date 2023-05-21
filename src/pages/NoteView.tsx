@@ -2,8 +2,9 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
-import { IconButton } from "@mui/material";
-import { Edit, Save } from "@mui/icons-material";
+import { Button, IconButton } from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import NoteViewLabel from "../components/NoteViewLabel";
 
 interface Label {
   id: string;
@@ -24,6 +25,12 @@ function NoteView() {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>();
+
+  const handleLabelDelete = (status: boolean) => {
+    if (status) {
+      getNoteDetails();
+    }
+  };
 
   const getNoteDetails = async () => {
     axios
@@ -58,8 +65,8 @@ function NoteView() {
         }
       )
       .then(() => {
-        window.location.reload();
         setEdit(false);
+        getNoteDetails();
       })
       .catch((err) => {
         console.log(err);
@@ -77,25 +84,28 @@ function NoteView() {
 
   useEffect(() => {
     getNoteDetails();
-    if (textareaRef.current) {
-      textareaRef.current.addEventListener("change", handleTextareaChange);
-    }
-    return () => {
-      if (textareaRef.current) {
-        textareaRef.current.removeEventListener("change", handleTextareaChange);
-      }
-    };
   }, []);
 
   return (
     <section className='min-h-screen relative'>
       <Navbar />
+      <div className='px-12 py-5 flex flex-wrap'>
+        {note?.labels.map((label) => (
+          <NoteViewLabel
+            id={label.id}
+            status={handleLabelDelete}
+            name={label.name}
+            key={label.id}
+          />
+        ))}
+      </div>
       {!edit && (
-        <div className='p-12 space-y-10 text-slate-700'>
+        <div className='px-12 py-4 space-y-10 text-slate-700'>
           <h1 className='text-5xl font-semibold'>{note?.title}</h1>
           <p>{note?.content}</p>
         </div>
       )}
+
       {edit && (
         <div className='flex flex-col p-12 space-y-10 text-slate-700'>
           <input
@@ -113,9 +123,20 @@ function NoteView() {
               handleTextareaChange();
             }}
           />
-          <IconButton className='w-fit' onClick={() => updateNote()}>
-            <Save sx={{ fontSize: "3rem" }} />
-          </IconButton>
+          <div className='flex space-x-2'>
+            <Button
+              variant='outlined'
+              color='success'
+              onClick={() => updateNote()}>
+              <p>Save</p>
+            </Button>
+            <Button
+              variant='outlined'
+              color='error'
+              onClick={() => setEdit(false)}>
+              <p>Cancel</p>
+            </Button>
+          </div>
         </div>
       )}
       <IconButton

@@ -32,7 +32,7 @@ export default function Navbar() {
         to='/home'
         className='flex text-xl text-white space-x-2 items-center'>
         <TextSnippet />
-        <h1>Notes App</h1>
+        <h1>Notes Tracker</h1>
       </Link>
       <div className='flex items-center space-x-6 text-white'>
         <div className='w-10 h-10 rounded-full overflow-hidden'>
