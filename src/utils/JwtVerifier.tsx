@@ -28,3 +28,11 @@ export const getSubject = (token: string) => {
     return false;
   }
 };
+export const getPicture = (token: string) => {
+  try {
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.picture;
+  } catch (err) {
+    return false;
+  }
+};

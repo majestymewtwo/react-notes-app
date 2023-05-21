@@ -17,6 +17,7 @@ function GoogleOauthLogin() {
   };
 
   const responseGoogle = async (auth: CredentialResponse) => {
+    localStorage.setItem("googleOauthToken", auth.credential as string);
     const params = new URLSearchParams({
       token: auth.credential as string,
     });

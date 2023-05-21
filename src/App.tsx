@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/context";
 import { isTokenValid } from "./utils/JwtVerifier";
+import NoteView from "./pages/NoteView";
 
 function App() {
   const context = useContext(UserContext);
@@ -24,6 +25,10 @@ function App() {
       <Route
         path='/home'
         element={context.isLoggedIn ? <Home /> : <Navigate to='/' />}
+      />
+      <Route
+        path='/note/:noteId'
+        element={context.isLoggedIn ? <NoteView /> : <Login />}
       />
       <Route path='*' element={<Navigate to='/' />} />
     </Routes>

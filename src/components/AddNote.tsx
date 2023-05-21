@@ -10,22 +10,17 @@ interface AddNoteProps {
 function AddNote({ status }: AddNoteProps) {
   const [note, setNote] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>();
 
   const addNote = async () => {
-    if (textareaRef.current?.value.length !== 0) {
-      console.log({
-        title: title,
-        content: textareaRef.current?.value,
-        labels: [],
-        pinned: false,
-      });
+    if (textareaRef.current && textareaRef.current?.value.length !== 0) {
       axios
         .post(
           "http://localhost:8080/api/user/new",
           {
             title: title,
-            content: textareaRef.current?.value,
+            content: content,
             labels: [],
             pinned: false,
           },
@@ -35,10 +30,12 @@ function AddNote({ status }: AddNoteProps) {
             },
           }
         )
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           status(true);
           setTitle("");
+          setContent("");
+          handleTextareaChange();
+          setNote(false);
         })
         .catch((err) => console.log(err));
     }
@@ -67,7 +64,11 @@ function AddNote({ status }: AddNoteProps) {
         placeholder='Take a note...'
         className={`w-full focus:outline-none resize-none bg-inherit`}
         onClick={() => setNote(true)}
-        onChange={handleTextareaChange}
+        value={content}
+        onChange={(e) => {
+          setContent(e.target.value);
+          handleTextareaChange();
+        }}
       />
       {note && (
         <div className='flex justify-end'>

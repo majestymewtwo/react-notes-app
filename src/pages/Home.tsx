@@ -6,9 +6,11 @@ import { UserContext } from "../context/context";
 import { useContext, useEffect, useState } from "react";
 
 interface Label {
+  id: string;
   name: string;
 }
 interface Note {
+  id: string;
   title: string;
   content: string;
   labels: Label[];
@@ -19,7 +21,7 @@ function Home() {
   const [notes, setNotes] = useState<Note[]>([]);
   const context = useContext(UserContext);
 
-  const handleAddNote = (status: boolean) => {
+  const handleNotesChange = (status: boolean) => {
     if (status) getNotes();
   };
 
@@ -43,12 +45,43 @@ function Home() {
   return (
     <section className='min-h-screen'>
       <Navbar />
-      <div className='p-4 space-y-10'>
-        <AddNote status={handleAddNote} />
+      <div className='p-4 space-y-8'>
+        <AddNote status={handleNotesChange} />
+        {/* Pinned Notes */}
         <div className='flex flex-wrap justify-center'>
-          {notes.map((note, index) => (
-            <Note key={index} title={note.title} content={note.content} />
-          ))}
+          {notes.map((note: Note, index) => {
+            if (note.pinned) {
+              return (
+                <Note
+                  key={index}
+                  title={note.title}
+                  content={note.content}
+                  id={note.id}
+                  pinned={note.pinned}
+                  labels={note.labels}
+                  status={handleNotesChange}
+                />
+              );
+            }
+          })}
+        </div>
+        {/* Unpinned Notes */}
+        <div className='flex flex-wrap justify-center'>
+          {notes.map((note: Note, index) => {
+            if (!note.pinned) {
+              return (
+                <Note
+                  key={index}
+                  title={note.title}
+                  content={note.content}
+                  id={note.id}
+                  pinned={note.pinned}
+                  labels={note.labels}
+                  status={handleNotesChange}
+                />
+              );
+            }
+          })}
         </div>
       </div>
     </section>
